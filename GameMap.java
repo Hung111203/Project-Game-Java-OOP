@@ -1,5 +1,5 @@
 import java.util.Random;
-public class Main {
+public class GameMap {
     public static void main(String[] args) {
 
         Map map = new Map();
