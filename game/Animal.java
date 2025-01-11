@@ -19,9 +19,6 @@ public class Animal{
         return type;
     }
 
-    public void Print(){
-        System.out.println("Hello World");
-    }
 
 }
 
