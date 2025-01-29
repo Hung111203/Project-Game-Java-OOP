@@ -85,7 +85,7 @@ public class FlowThread implements Runnable {
 
                 if (outputCapture.getFirstLine().equals("Player ask"))  {
                     currentTurnState=0;
-                    mapGUI.textDisplay.displayMessage(outputCapture.getAllContent(),2, 0.2f*mapGUI.getScreenWidth(), 0, 0.5f*mapGUI.getScreenWidth(), 0.25f*mapGUI.getScreenHeight());
+                    mapGUI.textDisplay.displayMessage(outputCapture.getAllContent(),7, 0.2f*mapGUI.getScreenWidth(), 0, 0.5f*mapGUI.getScreenWidth(), 0.25f*mapGUI.getScreenHeight());
                     mapGUI.nextPlayer();
                     returnData="";
                     outputCapture.clear();

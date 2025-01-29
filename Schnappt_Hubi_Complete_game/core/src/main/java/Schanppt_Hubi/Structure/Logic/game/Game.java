@@ -295,7 +295,6 @@ public class Game{
                 break;
             case "medium":
                 String mediumAnswerType = answerType[random.nextInt(2)];
-                System.out.println("Answer Type: " + mediumAnswerType);
                 if(mediumAnswerType.equals("True answer")){
                     generateTrueAnswerHubi(hubiCurrentLocation);
                 }else {
@@ -305,7 +304,6 @@ public class Game{
 
             case "hard":
                 String hardAnswerType = answerType[random.nextInt(3)];
-                System.out.println("Answer Type: " + hardAnswerType);
                 if(hardAnswerType.equals("MultipleChoice")){
                     generateMultipleChoiceHubi(hubiCurrentLocation);
                 }else if(hardAnswerType.equals("True answer")){
