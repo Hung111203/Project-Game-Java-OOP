@@ -56,6 +56,7 @@ public class FlowThread implements Runnable {
 
     @Override
     public void run() {
+        int switchPhase=0;
         while (running) {
             if (gameRunner.winGame())   {
                 mapGUI.textDisplay.displayMessage("Congratulations, you have won the game",10, 0.2f*mapGUI.getScreenWidth(), 0, 0.6f*mapGUI.getScreenWidth(), 0.8f*mapGUI.getScreenHeight());
@@ -82,14 +83,15 @@ public class FlowThread implements Runnable {
             if (!outputCapture.isEmpty())   {
 //                System.out.println("line is "+outputCapture.getLine(2));
 
-                if (outputCapture.getFirstLine().equals("asking command"))  {
+                if (outputCapture.getFirstLine().equals("Player ask"))  {
                     currentTurnState=0;
-                    mapGUI.textDisplay.displayMessage(outputCapture.getAllContent(),10, 0.2f*mapGUI.getScreenWidth(), 0, 0.5f*mapGUI.getScreenWidth(), 0.25f*mapGUI.getScreenHeight());
+                    mapGUI.textDisplay.displayMessage(outputCapture.getAllContent(),2, 0.2f*mapGUI.getScreenWidth(), 0, 0.5f*mapGUI.getScreenWidth(), 0.25f*mapGUI.getScreenHeight());
                     mapGUI.nextPlayer();
                     returnData="";
                     outputCapture.clear();
                 }
                 else if (outputCapture.getLine(1).equals("Sorry, the move is invalid!!!"))   {
+                    mapGUI.textDisplay.displayMessage("Sorry, the move is invalid", 2, 0.2f * mapGUI.getScreenWidth(), 0, 0.5f * mapGUI.getScreenWidth(), 0.25f * mapGUI.getScreenHeight());
                     mapGUI.nextPlayer();
                     outputCapture.clear();
                     returnData="";
@@ -112,18 +114,16 @@ public class FlowThread implements Runnable {
                     returnData="";
                     outputCapture.clear();
                 }
-                else if (returnData.equals("Magic"))   {
-                    currentTurnState=1;
-                    returnData="";
-                    if (gameRunner.canFindHubi())   {
-                        gameRunner.game.setPhase();
-                        gameRunner.findHubiPhase();
-                    }
-                    outputCapture.clear();
+                if (gameRunner.canFindHubi() && switchPhase==0)   {
+                    mapGUI.textDisplay.displayMessage("Now you can find Hubi", 3, 0.2f * mapGUI.getScreenWidth(), 0, 0.5f * mapGUI.getScreenWidth(), 0.25f * mapGUI.getScreenHeight());
+                    switchPhase=1;
                 }
 
                 if (TurnCount>= gameRunner.getHubiMoveThreshold()+5)  {
                     gameRunner.game.moveHubi();
+                    if (gameRunner.canFindHubi()) {
+                        mapGUI.textDisplay.displayMessage("Hubi has moved ", 4, 0.2f * mapGUI.getScreenWidth(), 0, 0.5f * mapGUI.getScreenWidth(), 0.25f * mapGUI.getScreenHeight());
+                    }
                     TurnCount=0;
                 }
 

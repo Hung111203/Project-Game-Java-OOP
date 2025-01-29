@@ -138,7 +138,9 @@ public class Map {
         }
     }
 
-
+    /**
+     * Backend display for a raw architecture view of a house
+     */
     public void Display() {
         for (int i = 0; i < 9; i++) { // Loop through each row
             for (int j = 0; j < 9; j++) { // Loop through each object in a row
@@ -148,6 +150,10 @@ public class Map {
         }
     }
 
+    /**
+     * This method is for generating possible path for both mouse and rabbit character
+     * @param AnimalType is the name of a character animal that is controlled by user
+     */
     private void PossibleGameplay(String AnimalType) {
     int[][] connectedToRoot = new int[9][9]; connectedToRoot[1][1]=1;
     Random rand = new Random();
