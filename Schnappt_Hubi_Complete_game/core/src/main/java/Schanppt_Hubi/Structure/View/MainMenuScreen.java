@@ -1,3 +1,11 @@
+/**
+ * OOP Java Project  WiSe 2024/2025
+ * Author: Thanh Bao Hung Nguyen
+ * Date: 15/12/2024
+ * Final Complete Date: 28/12/2024
+ * Description: implement main menu GUI screen of the game
+ * Status: Accepted
+ */
 package Schanppt_Hubi.Structure.View;
 
 import Schanppt_Hubi.Structure.Main;
@@ -88,6 +96,10 @@ public class MainMenuScreen implements Screen {
         viewport.update(width, height, true);
         stage.getViewport().update(width, height, true);
     }
+
+    /**
+     * Player background music
+     */
     public void playBackgroundMusic(){
         if (!music.isPlaying()) {
             music.setLooping(true);  // Loop the music
@@ -95,6 +107,10 @@ public class MainMenuScreen implements Screen {
         }
 
     }
+
+    /**
+     * Stop playing background music
+     */
     public void stopBackgroundMusic() {
         // Stop the music when it's not needed
         if (music.isPlaying()) {

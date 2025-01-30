@@ -1,3 +1,11 @@
+/**
+ * OOP Java Project  WiSe 2024/2025
+ * Author: Viet Bach Ho
+ * Date: 20/12/2024
+ * Final Complete Date: 02/01/2025
+ * Description: Define backend gameplay thread
+ * Status: Accepted
+ */
 package Schanppt_Hubi.Structure.Logic.game;
 
 import Schanppt_Hubi.Structure.OutputCapture;
@@ -68,6 +76,10 @@ import java.util.*;
             }
         }
 
+        /**
+         * Assign appropriate number of characters to players
+         * @param numberPlayers
+         */
         public static void inputNumberPlayer(int numberPlayers) {
             int option = random.nextInt(2);
             switch (numberPlayers) {
@@ -116,6 +128,9 @@ import java.util.*;
             }
         }
 
+        /**
+         * Set up game difficulty
+         */
         public static void setUpNumber_Level(){
             game = new Game(players);
             hubiMoveThreshold = game.HubiMoveThreshold();
@@ -137,6 +152,10 @@ import java.util.*;
             return hubiMoveThreshold;
         }
 
+        /**
+         * Check if phase 2 has begun
+         * @return true if phase 2 has begun otherwise false
+         */
         public static boolean canFindHubi()     {
             if (MagicDoorCount>=MagicDoorThreshold)   {
                 return true;
@@ -154,6 +173,11 @@ import java.util.*;
 
 
         }
+
+        /**
+         * Process action from player to backend logic
+         * @param action Action of player includes "ask" and 4 direction of movement
+         */
         public static void actionOption(String action){
             outputCapture.startCapture();
             if(!action.toLowerCase().equals("ask")){
@@ -226,6 +250,10 @@ import java.util.*;
         //         incrementMagicDoorCount();
         //     }
 
+        /**
+         * Check the condition for winning the game
+         * @return
+         */
         public static boolean winGame(){
             for (int[] room : MoreThan2PlayerRoom){
                 if(game.isHubiInRoom(room)){

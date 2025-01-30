@@ -1,3 +1,13 @@
+/**
+ * OOP Java Project  WiSe 2024/2025
+ * Author: Thanh Bao Hung Nguyen
+ * Author: Viet Bach Ho
+ * Author: Manh Thanh Long Nguyen
+ * Date: 22/12/2024
+ * Final Complete Date: 15/01/2025
+ * Description: integration between backend and frontend
+ * Status: Accepted
+ */
 package Schanppt_Hubi.Structure.Flow;
 
 import Schanppt_Hubi.Structure.Logic.game.GameRunner;

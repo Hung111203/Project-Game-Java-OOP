@@ -5,6 +5,7 @@ import Schanppt_Hubi.Structure.Main;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -69,6 +70,7 @@ public class MapGUI implements Screen {
 
     private Sprite playerIndicator;
     public TextDisplay textDisplay;
+    private Music music;
     public MapGUI(final Main game, FlowThread fl) {
         curPlayerIndicator = new HashMap<>();
         playerIndicator = new Sprite(new Texture("Indicator/Yellow_neon.jpg"));
@@ -87,6 +89,8 @@ public class MapGUI implements Screen {
         currentPLayerIndexing=0;
         camera.position.set(850 / 2f, 850 / 2f, 0);
         camera.update();
+        music = Gdx.audio.newMusic(Gdx.files.internal("WashingHandMusic.mp3"));
+        music.setVolume(0.75f);
 
         TmxMapLoader mapLoader = new TmxMapLoader();
         tiledMap = mapLoader.load("MapGUI.tmx");
@@ -239,10 +243,12 @@ public class MapGUI implements Screen {
         for (int i=0;i<wallGUIlist.size();i++)      {
             wallBatch.setProjectionMatrix(camera.combined);
             wallBatch.begin();
-            wallGUIlist.get(i).wallRenderer.setPosition(wallGUIlist.get(i).x, wallGUIlist.get(i).y);
-            wallGUIlist.get(i).wallRenderer.setSize(wallGUIlist.get(i).width,wallGUIlist.get(i).height);
-            wallGUIlist.get(i).wallRenderer.draw(wallBatch);
-            wallBatch.end();
+            if (wallGUIlist.get(i) !=null) {
+                wallGUIlist.get(i).wallRenderer.setPosition(wallGUIlist.get(i).x, wallGUIlist.get(i).y);
+                wallGUIlist.get(i).wallRenderer.setSize(wallGUIlist.get(i).width, wallGUIlist.get(i).height);
+                wallGUIlist.get(i).wallRenderer.draw(wallBatch);
+                wallBatch.end();
+            }
         }
 
         GeneralBatch.setProjectionMatrix(camera.combined);
@@ -421,7 +427,9 @@ public class MapGUI implements Screen {
 
     }
     @Override
-    public void show() {}
+    public void show() {
+        playBackgroundMusic();
+    }
 
     @Override
     public void hide() {}
@@ -529,6 +537,20 @@ public class MapGUI implements Screen {
     }
     public int getScreenHeight()    {
         return Gdx.graphics.getHeight();
+    }
+
+    public void playBackgroundMusic(){
+        if (!music.isPlaying()) {
+            music.setLooping(true);  // Loop the music
+            music.play();  // Start playing the music
+        }
+
+    }
+    public void stopBackgroundMusic() {
+        // Stop the music when it's not needed
+        if (music.isPlaying()) {
+            music.stop();
+        }
     }
 }
 

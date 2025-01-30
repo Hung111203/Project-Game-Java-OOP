@@ -1,3 +1,11 @@
+/**
+ * OOP Java Project  WiSe 2024/2025
+ * Author: Thanh Bao Hung Nguyen
+ * Date: 19/12/2024
+ * Final Complete Date: 03/01/2025
+ * Description: implement menu GUI screen for choosing number of players
+ * Status: Accepted
+ */
 package Schanppt_Hubi.Structure.View;
 
 import Schanppt_Hubi.Structure.Flow.flow;
@@ -60,7 +68,7 @@ public class GameScreen1 implements Screen {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 clickSound.play();
-                gameFlow.getGameRunner().initializePlayers(3); 
+                gameFlow.getGameRunner().initializePlayers(3);
                 game.setScreen(new GameScreen2(game, gameFlow));
             }
 
@@ -75,7 +83,7 @@ public class GameScreen1 implements Screen {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 clickSound.play();
-                gameFlow.getGameRunner().initializePlayers(4); 
+                gameFlow.getGameRunner().initializePlayers(4);
                 game.setScreen(new GameScreen2(game, gameFlow));
             }
 
@@ -98,7 +106,7 @@ public class GameScreen1 implements Screen {
         });
 
 
-        
+
         Table table = new Table();
         table.setFillParent(true);
         table.center().top();
@@ -128,6 +136,10 @@ public class GameScreen1 implements Screen {
 
     }
 
+    /**
+     * Render the game screen
+     * @param delta The time in seconds since the last render.
+     */
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -163,6 +175,9 @@ public class GameScreen1 implements Screen {
 
     }
 
+    /**
+     * Deallocation of resource
+     */
     @Override
     public void dispose() {
         stage.dispose();

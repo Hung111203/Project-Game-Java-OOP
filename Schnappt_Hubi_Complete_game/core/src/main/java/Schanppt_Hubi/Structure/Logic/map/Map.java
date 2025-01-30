@@ -1,11 +1,11 @@
 /**
  * OOP Java Project  WiSe 2024/2025
  * Author: Manh Thanh Long Nguyen
+ * Author: Viet Bach Ho
  * Date: 15/12/2024
  * Final Complete Date: 17/12/2024
  * Description: Create Backend for Map
  * Status: Accepted
- * Method: simple graph algorithm to create possible path for player to enter any room
  */
 package Schanppt_Hubi.Structure.Logic.map;
 import Schanppt_Hubi.Structure.Logic.auxiliary.Auxiliary;

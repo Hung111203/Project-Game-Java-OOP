@@ -1,3 +1,11 @@
+/**
+ * OOP Java Project  WiSe 2024/2025
+ * Author: Viet Bach Ho
+ * Date: 20/12/2024
+ * Final Complete Date: 30/12/2024
+ * Description: Define gameplay logic and resource
+ * Status: Accepted
+ */
 package Schanppt_Hubi.Structure.Logic.game;
 
 import java.util.Scanner;
@@ -90,6 +98,9 @@ public class Game{
         }
     }
 
+    /**
+     * Initialize resources of the game
+     */
     public static void initializeResource()    {
         map = new Map();
         mappingNPCname = map.getMappingNPCname();
@@ -112,6 +123,10 @@ public class Game{
 
     }
 
+    /**
+     * Define movement logic in gameplay
+     * @param direction Direction of player's movement
+     */
     public static void movePlayer(String direction){
         currentPlayer = GameRunner.getCurrentPlayer();
         int[] currentLocation = currentPlayer.getLocation();
@@ -167,6 +182,9 @@ public class Game{
     //     return wallType;
     // }
 
+    /**
+     * Define Hubi's movement logic
+     */
     public static void moveHubi(){
 
         // int[] currentLocation = hubi.getLocation();
@@ -205,6 +223,10 @@ public class Game{
         return level;
     }
 
+    /**
+     * Defines "ask" feature logic
+     * @param outputCapture Player action has to be "ask"
+     */
     public static void ask(OutputCapture outputCapture){
         System.out.println("Player ask");
         outputCapture.stopCapture();
@@ -246,6 +268,9 @@ public class Game{
         nextTurn();
     }
 
+    /**
+     * Define True Answer generation
+     */
     public static void generateTrueAnswer(){
         //System.out.println("All Wall Locations:");
         int[] hiddenMagicDoor = MagicDoorList.get(random.nextInt(MagicDoorList.size()));
@@ -259,6 +284,9 @@ public class Game{
         System.out.println("The magic door is between room [" + mappingNPCname.get(house[neighbors[0][0]][neighbors[0][1]].getType()) + "] and room [" + mappingNPCname.get(house[neighbors[1][0]][neighbors[1][1]].getType()) + "]");
     }
 
+    /**
+     * Define Wrong answer generation
+     */
     public static void generateWrongAnswer(){
         ArrayList<int[]> choices = allWallsList;
         removeMagicDoorsFromAllWalls(choices, MagicDoorList);
@@ -268,6 +296,9 @@ public class Game{
         System.out.println("The magic door is between room [" + mappingNPCname.get(house[neighbors[0][0]][neighbors[0][1]].getType()) + "] and room [" + mappingNPCname.get(house[neighbors[1][0]][neighbors[1][1]].getType()) + "]");
     }
 
+    /**
+     * Define multiple choices answer generation
+     */
     public static void generateMultipleChoice(){
         int[] hiddenMagicDoor = MagicDoorList.get(random.nextInt(MagicDoorList.size()));
         System.out.println("The magic door could be: ");
@@ -328,7 +359,7 @@ public class Game{
         // }
         // System.out.println("Answer Type: True answer");
         // System.out.println("Hubi is between room [" + neighbors[0][0] + ", " + neighbors[0][1] + "] and room [" + neighbors[1][0] + ", " + neighbors[1][1] + "]");
-        System.out.println("Hubi's current location: " + Arrays.toString(hubiCurrentLocation));
+        System.out.println("Hubi's current location is in room with: " + mappingNPCname.get((house[hubiCurrentLocation[0]][hubiCurrentLocation[1]]).getType()));
     }
 
     public static void generateWrongAnswerHubi(int[] hubiCurrentLocation){
@@ -338,6 +369,7 @@ public class Game{
         int[] chosenRoom = choices.get(random.nextInt(choices.size()));
         // int[][] neighbors = ((Room)house[chosenRoom[0]][chosenRoom[1]]).findNeighbors(house,chosenRoom[0], chosenRoom[1]);
         // System.out.println("Hubi is between room [" + neighbors[0][0] + ", " + neighbors[0][1] + "] and room [" + neighbors[1][0] + ", " + neighbors[1][1] + "]");
+        System.out.println("Hubi current location could be in room with" + mappingNPCname.get((house[chosenRoom[0]][1]).getType()) +"\n");
     }
 
     public static void generateMultipleChoiceHubi(int[] hubiCurrentLocation){
@@ -349,9 +381,7 @@ public class Game{
         choices.add(hubiCurrentLocation);
         Collections.shuffle(choices);
         for(int[] choice : choices){
-            // int[][] neighbors = ((Room)house[choice[0]][choice[1]]).findNeighbors(house,choice[0], choice[1]);
-            // System.out.println("between room [" + neighbors[0][0] + ", " + neighbors[0][1] + "] and room [" + neighbors[1][0] + ", " + neighbors[1][1] + "]" );
-            System.out.println("  in room: " + Arrays.toString(choice));
+            System.out.println(" somewhere in rooms that have " + mappingNPCname.get((house[choice[0]][1]).getType()) +"\n");
         }
     }
 
@@ -405,6 +435,11 @@ public class Game{
         }
     }
 
+    /**
+     * Defines difficulty of the game for appropriate resources initialization and gameplay logic
+     * @param inputLevel Difficulty of a game
+     * @return
+     */
     public static String setLevel(String inputLevel) {
         VALID_LEVELS.add("easy");
         VALID_LEVELS.add("medium");

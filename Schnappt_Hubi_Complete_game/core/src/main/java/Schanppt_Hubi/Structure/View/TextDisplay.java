@@ -1,3 +1,11 @@
+/**
+ * OOP Java Project  WiSe 2024/2025
+ * Author: Manh Thanh Long Nguyen
+ * Date: 22/12/2024
+ * Final Complete Date: 15/01/2025
+ * Description: Auxiliary function for displaying text message on GUI screen
+ * Status: Accepted
+ */
 package Schanppt_Hubi.Structure.View;
 
 import com.badlogic.gdx.Gdx;

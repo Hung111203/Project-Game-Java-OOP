@@ -1,3 +1,11 @@
+/**
+ * OOP Java Project  WiSe 2024/2025
+ * Author: Thanh Bao Hung Nguyen
+ * Date: 19/12/2024
+ * Final Complete Date: 03/01/2025
+ * Description: implement menu GUI screen for choosing difficulty
+ * Status: Accepted
+ */
 package Schanppt_Hubi.Structure.View;
 
 import Schanppt_Hubi.Structure.Flow.flow;

@@ -1,6 +1,7 @@
 /**
  * OOP Java Project  WiSe 2024/2025
  * Author: Manh Thanh Long Nguyen
+ * Author: Thanh Bao Hung Nguyen
  * Date: 25/12/2024
  * Final Complete Date: 28/01/2025
  * Description: Control flow of GUI
@@ -60,10 +61,12 @@ public class FlowThread implements Runnable {
         while (running) {
             if (gameRunner.winGame())   {
                 mapGUI.textDisplay.displayMessage("Congratulations, you have won the game",10, 0.2f*mapGUI.getScreenWidth(), 0, 0.6f*mapGUI.getScreenWidth(), 0.8f*mapGUI.getScreenHeight());
+                mapGUI.stopBackgroundMusic();
                 stop();
             }
             if (TotalTurn > loseThresHold)   {
                 mapGUI.textDisplay.displayMessage("Sorry, Hubi has won, player lose",10, 0.2f*mapGUI.getScreenWidth(), 0, 0.6f*mapGUI.getScreenWidth(), 0.8f*mapGUI.getScreenHeight());
+                mapGUI.stopBackgroundMusic();
                 stop();
             }
             if (currentTurnState==0)    {
