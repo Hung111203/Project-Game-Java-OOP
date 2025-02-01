@@ -18,129 +18,149 @@ import com.badlogic.gdx.Gdx;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
+import java.util.concurrent.locks.ReentrantLock;
+
 public class FlowThread implements Runnable {
-    private volatile boolean running = true;
     private static OutputCapture outputCapture;
     public String returnData;
     public int currentTurnState;
 
     private int TurnCount;
     private int TotalTurn;
-    private  GameRunner gameRunner;
+    private GameRunner gameRunner;
     private MapGUI mapGUI;
 
     private int loseThresHold;
+
+
+    private volatile boolean stopRequested = false;
+    private final ReentrantLock lock = new ReentrantLock();
+    private volatile boolean running = true;
     public FlowThread(final Main game, OutputCapture outputCapture, GameRunner gameRunner) {
-        returnData="";
+        returnData = "";
         TurnCount = 0;
         this.gameRunner = gameRunner;
         this.outputCapture = outputCapture;
-        mapGUI= new MapGUI(game,this);
+        mapGUI = new MapGUI(game, this);
         game.setScreen(mapGUI);
         ArrayList<String> validPlayer = gameRunner.getAllPlayersPosition();
         mapGUI.ReArrangePLayer(validPlayer);
         Random random = new Random();
         loseThresHold = 2 * (random.nextInt(8) + 8); // Generates a random number from 8 to 15
         String difficulty = gameRunner.getDifficulty();
-        if (difficulty.equals("easy"))    {
-            loseThresHold *=4;
-        }
-        else if (difficulty.equals("medium"))   {
-            loseThresHold *=3;
-        }
-        else    {
-            loseThresHold *=2;
+        if (difficulty.equals("easy")) {
+            loseThresHold *= 4;
+        } else if (difficulty.equals("medium")) {
+            loseThresHold *= 3;
+        } else {
+            loseThresHold *= 2;
         }
         System.out.println(loseThresHold);
-        TotalTurn=0;
+        TotalTurn = 0;
     }
 
+    public void stopThread() {
+        stopRequested = true; // Signal the thread to stop
+    }
+    public void stop() {
+        running = false;
+    }
     @Override
     public void run() {
-        int switchPhase=0;
+        int switchPhase = 0;
+
         while (running) {
-            if (gameRunner.winGame())   {
-                mapGUI.textDisplay.displayMessage("Congratulations, you have won the game",10, 0.2f*mapGUI.getScreenWidth(), 0, 0.6f*mapGUI.getScreenWidth(), 0.8f*mapGUI.getScreenHeight());
-                mapGUI.stopBackgroundMusic();
-                stop();
+            lock.lock(); // Ensure only one thread executes at a time
+            try {
+                if (stopRequested) {
+                    running = false;
+                    break; // Stop execution only after completing the current loop
+                }
+
+                if (gameRunner.winGame()) {
+                    mapGUI.textDisplay.displayMessage("Congratulations, you have won the game", 10, 0.2f * mapGUI.getScreenWidth(), 0, 0.6f * mapGUI.getScreenWidth(), 0.8f * mapGUI.getScreenHeight());
+                    mapGUI.stopBackgroundMusic();
+                    stop();
+                    return;
+                } else if (TotalTurn > loseThresHold) {
+                    mapGUI.textDisplay.displayMessage("Sorry, Hubi has won, player lose", 10, 0.2f * mapGUI.getScreenWidth(), 0, 0.6f * mapGUI.getScreenWidth(), 0.8f * mapGUI.getScreenHeight());
+                    mapGUI.stopBackgroundMusic();
+                    stop();
+                    return;
+                }
+
+                // Execute all game logic safely
+                if (currentTurnState == 0) {
+                    currentTurnState = 1;
+                    if (!returnData.equals("")) {
+                        gameRunner.actionOption(returnData);
+                        TurnCount++;
+                        TotalTurn++;
+                        if (!outputCapture.getFirstLine().equals("|") && !outputCapture.getFirstLine().equals("_") && !returnData.equalsIgnoreCase("ask")) {
+                            mapGUI.addWall(outputCapture.getFirstLine());
+                        }
+                    }
+                }
+
+                if (!outputCapture.isEmpty()) {
+                    if (outputCapture.getFirstLine().equals("Player ask")) {
+                        currentTurnState = 0;
+                        mapGUI.textDisplay.displayMessage(outputCapture.getAllContent(), 7, 0.2f * mapGUI.getScreenWidth(), 0, 0.5f * mapGUI.getScreenWidth(), 0.25f * mapGUI.getScreenHeight());
+                        mapGUI.nextPlayer();
+                        returnData = "";
+                        outputCapture.clear();
+                    } else if (outputCapture.getLine(1).equals("Sorry, the move is invalid!!!")) {
+                        mapGUI.textDisplay.displayMessage("Sorry, the move is invalid", 2, 0.2f * mapGUI.getScreenWidth(), 0, 0.5f * mapGUI.getScreenWidth(), 0.25f * mapGUI.getScreenHeight());
+                        mapGUI.nextPlayer();
+                        outputCapture.clear();
+                        returnData = "";
+                        mapGUI.ButtonEnabled = true;
+                    }
+                    if (outputCapture.getLine(1).equals("The move is valid")) {
+                        currentTurnState = 1;
+                        switch (returnData) {
+                            case "Left":
+                                mapGUI.leftAnimation();
+                                break;
+                            case "Right":
+                                mapGUI.rightAnimation();
+                                break;
+                            case "Up":
+                                mapGUI.upAnimation();
+                                break;
+                            case "Down":
+                                mapGUI.downAnimation();
+                                break;
+                            default:
+                                break;
+                        }
+                        returnData = "";
+                        outputCapture.clear();
+                    }
+                    if (gameRunner.canFindHubi() && switchPhase == 0) {
+                        mapGUI.textDisplay.displayMessage("Now you can find Hubi", 3, 0.2f * mapGUI.getScreenWidth(), 0, 0.5f * mapGUI.getScreenWidth(), 0.25f * mapGUI.getScreenHeight());
+                        switchPhase = 1;
+                    }
+
+                    if (TurnCount >= gameRunner.getHubiMoveThreshold() + 5) {
+                        gameRunner.game.moveHubi();
+                        if (gameRunner.canFindHubi()) {
+                            mapGUI.textDisplay.displayMessage("Hubi has moved ", 4, 0.2f * mapGUI.getScreenWidth(), 0, 0.5f * mapGUI.getScreenWidth(), 0.25f * mapGUI.getScreenHeight());
+                        }
+                        TurnCount = 0;
+                    }
+                }
+            } finally {
+                lock.unlock(); // Ensure the lock is always released
             }
-            if (TotalTurn > loseThresHold)   {
-                mapGUI.textDisplay.displayMessage("Sorry, Hubi has won, player lose",10, 0.2f*mapGUI.getScreenWidth(), 0, 0.6f*mapGUI.getScreenWidth(), 0.8f*mapGUI.getScreenHeight());
-                mapGUI.stopBackgroundMusic();
-                stop();
-            }
-            if (currentTurnState==0)    {
-                currentTurnState=1;
-                if (!returnData.equals(""))   {
-//                    System.out.println(returnData);
-                    gameRunner.actionOption(returnData);
-                    TurnCount++;
-                    TotalTurn++;
-                    if (!outputCapture.getFirstLine().equals("|") && !outputCapture.getFirstLine().equals("_") && !returnData.equalsIgnoreCase("ask")) {
-                        mapGUI.addWall(outputCapture.getFirstLine());
-                    }
-                }
 
-            }
-
-            if (!outputCapture.isEmpty())   {
-//                System.out.println("line is "+outputCapture.getLine(2));
-
-                if (outputCapture.getFirstLine().equals("Player ask"))  {
-                    currentTurnState=0;
-                    mapGUI.textDisplay.displayMessage(outputCapture.getAllContent(),7, 0.2f*mapGUI.getScreenWidth(), 0, 0.5f*mapGUI.getScreenWidth(), 0.25f*mapGUI.getScreenHeight());
-                    mapGUI.nextPlayer();
-                    returnData="";
-                    outputCapture.clear();
-                }
-                else if (outputCapture.getLine(1).equals("Sorry, the move is invalid!!!"))   {
-                    mapGUI.textDisplay.displayMessage("Sorry, the move is invalid", 2, 0.2f * mapGUI.getScreenWidth(), 0, 0.5f * mapGUI.getScreenWidth(), 0.25f * mapGUI.getScreenHeight());
-                    mapGUI.nextPlayer();
-                    outputCapture.clear();
-                    returnData="";
-                    mapGUI.ButtonEnabled=true;
-                }
-                else if (outputCapture.getLine(1).equals("The move is valid"))      {
-                    currentTurnState=1;
-                    if (returnData.equals("Left"))  {
-                        mapGUI.leftAnimation();
-                    }
-                    else if (returnData.equals("Right"))    {
-                        mapGUI.rightAnimation();
-                    }
-                    else if (returnData.equals("Up"))   {
-                        mapGUI.upAnimation();
-                    }
-                    else if (returnData.equals("Down"))     {
-                        mapGUI.downAnimation();
-                    }
-                    returnData="";
-                    outputCapture.clear();
-                }
-                if (gameRunner.canFindHubi() && switchPhase==0)   {
-                    mapGUI.textDisplay.displayMessage("Now you can find Hubi", 3, 0.2f * mapGUI.getScreenWidth(), 0, 0.5f * mapGUI.getScreenWidth(), 0.25f * mapGUI.getScreenHeight());
-                    switchPhase=1;
-                }
-
-                if (TurnCount>= gameRunner.getHubiMoveThreshold()+5)  {
-                    gameRunner.game.moveHubi();
-                    if (gameRunner.canFindHubi()) {
-                        mapGUI.textDisplay.displayMessage("Hubi has moved ", 4, 0.2f * mapGUI.getScreenWidth(), 0, 0.5f * mapGUI.getScreenWidth(), 0.25f * mapGUI.getScreenHeight());
-                    }
-                    TurnCount=0;
-                }
-
-            }
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
-                break;
+                running = false;
             }
         }
     }
 
-    public void stop() {
-        running = false;
-    }
 }

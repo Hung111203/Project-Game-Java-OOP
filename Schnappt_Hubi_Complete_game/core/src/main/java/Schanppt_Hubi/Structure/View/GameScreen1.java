@@ -1,11 +1,3 @@
-/**
- * OOP Java Project  WiSe 2024/2025
- * Author: Thanh Bao Hung Nguyen
- * Date: 19/12/2024
- * Final Complete Date: 03/01/2025
- * Description: implement menu GUI screen for choosing number of players
- * Status: Accepted
- */
 package Schanppt_Hubi.Structure.View;
 
 import Schanppt_Hubi.Structure.Flow.flow;
@@ -45,7 +37,7 @@ public class GameScreen1 implements Screen {
         Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
         clickSound = Gdx.audio.newSound(Gdx.files.internal("clicksound.wav"));
 
-        logoImage = new Image(new Texture("logo-3.png"));
+        logoImage = new Image(new Texture("logo2.png"));
 
         TextButton twoPlayer = new TextButton("TWO", skin);
         twoPlayer.setSize(200, 50);
@@ -119,11 +111,11 @@ public class GameScreen1 implements Screen {
         table.add(fourPlayer).size(200, 50).spaceBottom(7.0f);
         table.row().bottom().right();
         table.add(backButton)
-                .size(200, 50)
-                .padTop(35f)
-                .spaceBottom(3.0f)
-                .align(com.badlogic.gdx.utils.Align.right)
-                .expandX();
+            .size(200, 50)
+            .padTop(35f)
+            .spaceBottom(3.0f)
+            .align(com.badlogic.gdx.utils.Align.right)
+            .expandX();
 
 
 
@@ -136,10 +128,6 @@ public class GameScreen1 implements Screen {
 
     }
 
-    /**
-     * Render the game screen
-     * @param delta The time in seconds since the last render.
-     */
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -175,9 +163,6 @@ public class GameScreen1 implements Screen {
 
     }
 
-    /**
-     * Deallocation of resource
-     */
     @Override
     public void dispose() {
         stage.dispose();
