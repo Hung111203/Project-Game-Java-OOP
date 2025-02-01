@@ -204,11 +204,11 @@ public class MapGUI implements Screen {
             PlayerList.get(i).batch=new SpriteBatch();
             PlayerList.get(i).texture=new Texture(characterSkinDir[i]);
             PlayerList.get(i).animalRenderer=new Sprite(PlayerList.get(i).texture);
-            WallTextureList.add(new Texture("Wall/BlockWall.png"));
-            WallTextureList.add(new Texture("Wall/FreeWall.png"));
-            WallTextureList.add(new Texture("Wall/MagicWall.png"));
-            WallTextureList.add(new Texture("Wall/MouseWall.png"));
-            WallTextureList.add(new Texture("Wall/RabbitWall.png"));
+            WallTextureList.add(new Texture("Wall/blockwald.png"));
+            WallTextureList.add(new Texture("Wall/freiwald.png"));
+            WallTextureList.add(new Texture("Wall/magikwald.png"));
+            WallTextureList.add(new Texture("Wall/mauswald.png"));
+            WallTextureList.add(new Texture("Wall/hasewald.png"));
 
             curPlayerIndicator.put("71",new Texture("Indicator/Blue_neon.jpg"));
             curPlayerIndicator.put("11",new Texture("Indicator/Green_neon.jpg"));

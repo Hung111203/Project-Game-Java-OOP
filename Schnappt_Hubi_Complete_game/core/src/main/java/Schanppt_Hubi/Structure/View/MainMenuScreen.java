@@ -1,11 +1,3 @@
-/**
- * OOP Java Project  WiSe 2024/2025
- * Author: Thanh Bao Hung Nguyen
- * Date: 15/12/2024
- * Final Complete Date: 28/12/2024
- * Description: implement main menu GUI screen of the game
- * Status: Accepted
- */
 package Schanppt_Hubi.Structure.View;
 
 import Schanppt_Hubi.Structure.Main;
@@ -62,6 +54,16 @@ public class MainMenuScreen implements Screen {
                 clickSound.play();
             }
         });
+        TextButton backButton = new TextButton("How to play", skin);
+        backButton.setSize(200, 50);
+        //  click on the button and every lines of code in addlistener will be executed
+        backButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.setScreen(new HowToPlayScreen(game,gameFlow));
+                clickSound.play();
+            }
+        });
 
         // Create a table for layout
         Table table = new Table();
@@ -69,7 +71,10 @@ public class MainMenuScreen implements Screen {
         table.center().top();
         table.add(logoImage).size(500,400);
         table.row();
-        table.add(startButton).size(200, 50);
+        table.add(startButton).size(200, 50).spaceBottom(7.0f);;
+        table.row();
+        table.add(backButton)
+            .size(200, 50);
 
         // Add table to the stage
         stage.addActor(table);
@@ -96,10 +101,6 @@ public class MainMenuScreen implements Screen {
         viewport.update(width, height, true);
         stage.getViewport().update(width, height, true);
     }
-
-    /**
-     * Player background music
-     */
     public void playBackgroundMusic(){
         if (!music.isPlaying()) {
             music.setLooping(true);  // Loop the music
@@ -107,10 +108,6 @@ public class MainMenuScreen implements Screen {
         }
 
     }
-
-    /**
-     * Stop playing background music
-     */
     public void stopBackgroundMusic() {
         // Stop the music when it's not needed
         if (music.isPlaying()) {
