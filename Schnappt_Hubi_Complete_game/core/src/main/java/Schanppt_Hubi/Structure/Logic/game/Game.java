@@ -78,6 +78,10 @@ public class Game{
         phase = 1;
     }
 
+    public static int getPhase(){
+        return phase;
+    }
+
     public static int MagicDoorThreshold(){
         if(level.equals("easy")){
             return 1;
@@ -413,7 +417,7 @@ public class Game{
         // }else{
         //     setHubiInitialPosition();
         // }
-
+        System.out.println("Hubi initial location: [" + hubi.getLocation()[0] + ", " + hubi.getLocation()[1] + "]");
         int[] HubiRandomRoom = allRoomsList.get(random.nextInt(allRoomsList.size()));
         hubi.setLocation(HubiRandomRoom[0], HubiRandomRoom[1]);
     }

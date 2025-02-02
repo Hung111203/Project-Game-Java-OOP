@@ -171,7 +171,6 @@ import java.util.*;
 
             // Check if the there are enough players in a same room with hubi at the beginning of the find Hubi Phase. If yes, set win to players, if not start the find Hubi Phase.
 
-
         }
 
         /**

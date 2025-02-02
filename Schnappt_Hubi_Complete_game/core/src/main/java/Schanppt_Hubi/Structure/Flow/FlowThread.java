@@ -77,7 +77,7 @@ public class FlowThread implements Runnable {
                     break; // Stop execution only after completing the current loop
                 }
 
-                if (gameRunner.winGame()) {
+                if (gameRunner.winGame() && (gameRunner.getGame().getPhase() != 0)) {
                     mapGUI.textDisplay.displayMessage("Congratulations, you have won the game", 10, 0.2f * mapGUI.getScreenWidth(), 0, 0.6f * mapGUI.getScreenWidth(), 0.8f * mapGUI.getScreenHeight());
                     mapGUI.stopBackgroundMusic();
                     stop();
@@ -145,7 +145,8 @@ public class FlowThread implements Runnable {
                     if (TurnCount >= gameRunner.getHubiMoveThreshold() + 5) {
                         gameRunner.game.moveHubi();
                         if (gameRunner.canFindHubi()) {
-                            mapGUI.textDisplay.displayMessage("Hubi has moved ", 4, 0.2f * mapGUI.getScreenWidth(), 0, 0.5f * mapGUI.getScreenWidth(), 0.25f * mapGUI.getScreenHeight());
+                            mapGUI.textDisplay.displayMessage("Oops, Hubi has moved to another room!!!", 10, 0.2f * mapGUI.getScreenWidth(), 0, 0.6f * mapGUI.getScreenWidth(), 0.8f * mapGUI.getScreenHeight());
+//                            mapGUI.textDisplay.displayMessage("Hubi has moved ", 4, 0.2f * mapGUI.getScreenWidth(), 0, 0.5f * mapGUI.getScreenWidth(), 0.25f * mapGUI.getScreenHeight());
                         }
                         TurnCount = 0;
                     }

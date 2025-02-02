@@ -89,7 +89,7 @@ public class MapGUI implements Screen {
         currentPLayerIndexing=0;
         camera.position.set(850 / 2f, 850 / 2f, 0);
         camera.update();
-        music = Gdx.audio.newMusic(Gdx.files.internal("WashingHandMusic.mp3"));
+        music = Gdx.audio.newMusic(Gdx.files.internal("Game-song.mp3"));
         music.setVolume(0.75f);
 
         TmxMapLoader mapLoader = new TmxMapLoader();
